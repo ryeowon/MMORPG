@@ -7,7 +7,9 @@ namespace Maze
         static void Main(string[] args)
         {
             Board board = new Board();
-            board.Initialize(25);
+            Player player = new Player();
+            board.Initialize(25, player);
+            player.Initialize(1, 1, board);
 
             Console.CursorVisible = false;
 
@@ -17,12 +19,13 @@ namespace Maze
             {
                 #region 프레임 관리
                 int currentTick = System.Environment.TickCount;
-                int elapsedTick = currentTick - lastTick;
-
-                if (elapsedTick < 1000 / 30) // ms
+                if (currentTick - lastTick < 1000 / 30) // ms
                     continue;
+                int deltaTick = currentTick - lastTick;
                 lastTick = currentTick;
                 #endregion
+
+                player.Update(deltaTick);
 
                 Console.SetCursorPosition(0, 0);
                 board.Render();
